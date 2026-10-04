@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import { normalizeSkus, escapeHtml, dedupeAndGroupFilters, computeOverallStatus } from '../lib/utils.js';
 
 console.log('=== SkuGlass unit tests ===\n');
@@ -32,14 +33,20 @@ assert(JSON.stringify(normalizeSkus('   ')) === '[]', 'empty input returns empty
 // 3. dedupeAndGroupFilters tests
 console.log('\n3. Testing dedupeAndGroupFilters:');
 const sampleFilters = [
-  { filter_field: 'Color', filter_name: 'Stainless Steel' },
-  { filter_field: 'Color', filter_name: 'Stainless Steel' },
-  { filter_field: 'Color', filter_name: 'Black' },
-  { filter_field: 'Type', filter_name: 'Range Hood' }
+  { field: 'Color', value: 'Stainless Steel' },
+  { field: 'Color', value: 'Stainless Steel' },
+  { field: 'Color', value: 'Black' },
+  { field: 'Type', value: 'Range Hood' },
+  { field: 'Type', value: null }
 ];
 const grouped = dedupeAndGroupFilters(sampleFilters);
-assert(grouped['Color'].length === 2, 'deduplicates duplicate filter names');
-assert(grouped['Color'].includes('Stainless Steel') && grouped['Color'].includes('Black'), 'groups filters by filter_field');
+assert(grouped['Color'].length === 2, 'deduplicates duplicate filter values');
+assert(grouped['Color'].includes('Stainless Steel') && grouped['Color'].includes('Black'), 'groups filters by field');
+assert(grouped['Type'].length === 1, 'skips entries with a null value');
+
+const fixtureText = fs.readFileSync(new URL('../fixtures/List Products.txt', import.meta.url), 'utf8');
+const fixtureFilters = JSON.parse(fixtureText.slice(fixtureText.indexOf('{'))).data[0].filter;
+assert(Object.keys(dedupeAndGroupFilters(fixtureFilters)).length > 0, 'groups the fixture filter[] (API key names)');
 
 // 4. Imported Multi-Zipcode Status Logic Verification (from lib/utils.js)
 console.log('\n4. Testing computeOverallStatus (imported from lib/utils.js):');
