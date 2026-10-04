@@ -1,0 +1,107 @@
+curl --request GET \
+     --url https://api.skulytics.io/v3/e-commerce/product/features \
+     --header 'accept: application/json'
+
+{
+  "code": "200",
+  "message": "Success",
+  "data": [
+    {
+      "product_id": 5000,
+      "sku": "EX1000SS",
+      "product_feature": [
+        {
+          "feature": "Fingerprint Resistant Stainless",
+          "description": "Placeholder description for this feature.",
+          "url": "https://assets.example.com/images/sample-27.webp"
+        },
+        {
+          "feature": "27.0 cu. ft. capacity",
+          "description": "Placeholder description for this feature.",
+          "url": "https://assets.example.com/images/sample-28.webp"
+        },
+        {
+          "feature": "Internal water dispenser",
+          "description": "Placeholder description for this feature.",
+          "url": "https://assets.example.com/images/sample-29.webp"
+        },
+        {
+          "feature": "Factory-installed icemaker with water filtration system",
+          "description": "Placeholder description for this feature.",
+          "url": "https://assets.example.com/images/sample-30.webp"
+        },
+        {
+          "feature": "LED lighting",
+          "description": "Placeholder description for this feature.",
+          "url": "https://assets.example.com/images/sample-31.webp"
+        },
+        {
+          "feature": "Spill-proof shelves",
+          "description": "Placeholder description for this feature.",
+          "url": "https://assets.example.com/images/sample-32.webp"
+        },
+        {
+          "feature": "Two humidity-controlled drawers and full-width drawer",
+          "description": "Placeholder description for this feature.",
+          "url": "https://assets.example.com/images/sample-33.webp"
+        },
+        {
+          "feature": "Quick Space shelf",
+          "description": "Placeholder description for this feature.",
+          "url": "https://assets.example.com/images/sample-34.webp"
+        },
+        {
+          "feature": "Internal controls with actual-temperature setting display",
+          "description": "Placeholder description for this feature.",
+          "url": "https://assets.example.com/images/sample-35.webp"
+        },
+        {
+          "feature": "Advanced water filtration",
+          "description": "Placeholder description for this feature.",
+          "url": "https://assets.example.com/images/sample-36.webp"
+        },
+        {
+          "feature": "Gallon door storage",
+          "description": "Placeholder description for this feature.",
+          "url": "https://assets.example.com/images/sample-37.webp"
+        },
+        {
+          "feature": "Two-level freezer storage baskets",
+          "description": "Placeholder description for this feature.",
+          "url": "https://assets.example.com/images/sample-38.webp"
+        },
+        {
+          "feature": "Door alarm",
+          "description": "Placeholder description for this feature.",
+          "url": "https://assets.example.com/images/sample-39.webp"
+        },
+        {
+          "feature": "Enhanced Shabbos Mode",
+          "description": "Placeholder description for this feature.",
+          "url": "https://assets.example.com/images/sample-40.webp"
+        }
+      ],
+      "date_modified": "6/16/2026 6:04 AM"
+    },
+    {
+      "product_id": 5091,
+      "sku": "EX1037WW",
+      "product_feature": [],
+      "date_modified": "5/20/2026 4:12 AM"
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "first_page_url": "https://api.skulytics.io/v3/e-commerce/product/features?page=1&sku=EX1000SS",
+    "from": 1,
+    "last_page": 1,
+    "last_page_url": "https://api.skulytics.io/v3/e-commerce/product/features?page=1&sku=EX1000SS",
+    "next_page_url": null,
+    "path": "https://api.skulytics.io/v3/e-commerce/product/features",
+    "per_page": 10,
+    "prev_page_url": null,
+    "to": 2,
+    "total": 2
+  },
+  "errors": null
+}

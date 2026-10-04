@@ -1,0 +1,199 @@
+curl --request GET \
+     --url https://api.skulytics.io/v3/e-commerce/product \
+     --header 'accept: application/json'
+
+{
+  "code": "200",
+  "message": "Success",
+  "data": [
+    {
+      "product_id": 5312,
+      "sku": "EX9732DS",
+      "brand_sku": "EX9732DS",
+      "short_sku": null,
+      "alternate_sku": null,
+      "replaced_sku": null,
+      "link": "https://www.example.com/products/sample-43",
+      "upc": "012345678905",
+      "color": {
+        "brand_color": "Stainless Steel"
+      },
+      "name": "Example 30\" Wall-Mount Range Hood",
+      "primary_image": "https://assets.example.com/images/sample-44.webp",
+      "descriptions": {
+        "short_description": null,
+        "long_description": null
+      },
+      "product_type": "Appliances",
+      "attributes": {
+        "built_in": "Yes"
+      },
+      "relations": {
+        "color_relation": [
+          {
+            "sku": "EX9658FS",
+            "brand_sku": "EX9658FS",
+            "color": "Fingerprint Resistant Slate"
+          },
+          {
+            "sku": "EX9695XS",
+            "brand_sku": "EX9695XS",
+            "color": "Fingerprint Resistant Black Slate"
+          },
+          {
+            "sku": "EX9621BB",
+            "brand_sku": "EX9621BB",
+            "color": "Fingerprint Resistant Black Stainless"
+          }
+        ],
+        "type_relation": [],
+        "related_items": [
+          {
+            "product_id": "5325",
+            "sku": "EX16947XS",
+            "brand_sku": "EX16947XS",
+            "item_type": "Accessories"
+          },
+          {
+            "product_id": "5338",
+            "sku": "EX16984DS",
+            "brand_sku": "EX16984DS",
+            "item_type": "Accessories"
+          },
+          {
+            "product_id": "5351",
+            "sku": "EX17021TS",
+            "brand_sku": "EX17021TS",
+            "item_type": "Accessories"
+          },
+          {
+            "product_id": "5364",
+            "sku": "EX17058SS",
+            "brand_sku": "EX17058SS",
+            "item_type": "Accessories"
+          }
+        ],
+        "recommended_packages": []
+      },
+      "filter": [
+        {
+          "field": "Energy Star Rated",
+          "value": "No"
+        },
+        {
+          "field": "Type",
+          "value": "Hood"
+        },
+        {
+          "field": "CFM",
+          "value": "300 - 400"
+        },
+        {
+          "field": "Voltage",
+          "value": "120 V"
+        },
+        {
+          "field": "Mounting Type",
+          "value": "Wall Mount"
+        },
+        {
+          "field": "Color",
+          "value": "Stainless Steel"
+        },
+        {
+          "field": "Style",
+          "value": "Chimney Style"
+        },
+        {
+          "field": "Ventilation",
+          "value": "Convertible"
+        },
+        {
+          "field": "Vent Hood Width",
+          "value": "21 - 30 Inch"
+        },
+        {
+          "field": "Features",
+          "value": "Auto Turn On"
+        },
+        {
+          "field": "Features",
+          "value": "Auto Turn On"
+        },
+        {
+          "field": "Features",
+          "value": "Built-in Lighting"
+        },
+        {
+          "field": "Features",
+          "value": "Built-in Lighting"
+        },
+        {
+          "field": "Features",
+          "value": "Auto Turn On"
+        },
+        {
+          "field": "Features",
+          "value": "Auto Turn On"
+        },
+        {
+          "field": "Blower Type",
+          "value": "Internal"
+        }
+      ],
+      "brand": {
+        "brand_id": 5208,
+        "brand_name": "Example Brand",
+        "brand_slug": "example-brand",
+        "brand_image": "https://assets.example.com/images/sample-45.webp",
+        "brand_banner": "https://assets.example.com/images/sample-46.webp",
+        "brand_manufacturer": "Example Brand",
+        "brand_blurb": null,
+        "brand_group": "Example Brand",
+        "manual_brand": 0,
+        "multi_brand": 0
+      },
+      "selling_countries": [
+        {
+          "country_id": "1",
+          "country_name": "United States",
+          "country_code": "US"
+        }
+      ],
+      "category": {
+        "category_id": 2,
+        "category_name": "Cooking",
+        "category_slug": "cooking",
+        "category_image": "https://assets.example.com/images/sample-47.webp"
+      },
+      "subcategory": {
+        "subcategory_id": 7,
+        "subcategory_name": "Vent Hoods",
+        "subcategory_slug": "vent-hoods",
+        "subcategory_image": "https://assets.example.com/images/sample-48.webp"
+      },
+      "detail_category": {
+        "detail_category_id": 37,
+        "detail_category_name": "Wall & Chimney Hoods",
+        "detail_category_slug": "wall-chimney-hoods",
+        "detail_category_image": "https://assets.example.com/images/sample-49.webp"
+      },
+      "date_added": "9/2/2021 6:02 AM",
+      "date_modified": "6/16/2026 6:04 AM"
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "first_page_url": "https://api.skulytics.io/v3/e-commerce/product?page=1&sku=EX9732DS",
+    "from": 1,
+    "last_page": 1,
+    "last_page_url": "https://api.skulytics.io/v3/e-commerce/product?page=1&sku=EX9732DS",
+    "next_page_url": null,
+    "path": "https://api.skulytics.io/v3/e-commerce/product",
+    "per_page": 10,
+    "prev_page_url": null,
+    "to": 1,
+    "total": 1
+  },
+  "errors": null
+}

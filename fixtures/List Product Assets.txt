@@ -1,0 +1,137 @@
+curl --request GET \
+     --url https://api.skulytics.io/v3/e-commerce/product/assets \
+     --header 'accept: application/json'
+
+{
+  "code": "200",
+  "message": "Success",
+  "data": [
+    {
+      "product_id": 5000,
+      "sku": "EX1000SS",
+      "primary_image": "https://assets.example.com/images/sample-1.webp",
+      "product_images": [
+        {
+          "id": 5013,
+          "url": "https://assets.example.com/images/sample-2.webp",
+          "priority": 0,
+          "content_length": "339.42 KB"
+        },
+        {
+          "id": 5026,
+          "url": "https://assets.example.com/images/sample-3.webp",
+          "priority": 0,
+          "content_length": "866.22 KB"
+        },
+        {
+          "id": 5039,
+          "url": "https://assets.example.com/images/sample-4.webp",
+          "priority": 0,
+          "content_length": "11.05 KB"
+        },
+        {
+          "id": 5052,
+          "url": "https://assets.example.com/images/sample-5.webp",
+          "priority": 0,
+          "content_length": "449.45 KB"
+        },
+        {
+          "id": 5065,
+          "url": "https://assets.example.com/images/sample-6.webp",
+          "priority": 0,
+          "content_length": "217.61 KB"
+        },
+        {
+          "id": 5078,
+          "url": "https://assets.example.com/images/sample-7.webp",
+          "priority": 0,
+          "content_length": "617.61 KB"
+        }
+      ],
+      "product_videos": [
+        {
+          "url": "https://www.example.com/videos/sample-8",
+          "is_default": 1
+        },
+        {
+          "url": "https://www.example.com/videos/sample-9",
+          "is_default": 0
+        },
+        {
+          "url": "https://www.example.com/videos/sample-10",
+          "is_default": 0
+        },
+        {
+          "url": "https://www.example.com/videos/sample-11",
+          "is_default": 0
+        },
+        {
+          "url": "https://www.example.com/videos/sample-12",
+          "is_default": 0
+        },
+        {
+          "url": "https://www.example.com/videos/sample-13",
+          "is_default": 0
+        }
+      ],
+      "product_asset_360": [
+        {
+          "url": "https://assets.example.com/images/sample-14.webp",
+          "angle": 1
+        },
+        {
+          "url": "https://assets.example.com/images/sample-15.webp",
+          "angle": 2
+        },
+        {
+          "url": "https://assets.example.com/images/sample-16.webp",
+          "angle": 3
+        },
+        {
+          "url": "https://assets.example.com/images/sample-17.webp",
+          "angle": 4
+        },
+        {
+          "url": "https://assets.example.com/images/sample-18.webp",
+          "angle": 5
+        },
+        {
+          "url": "https://assets.example.com/images/sample-19.webp",
+          "angle": 6
+        },
+        {
+          "url": "https://assets.example.com/images/sample-20.webp",
+          "angle": 7
+        },
+        {
+          "url": "https://assets.example.com/images/sample-21.webp",
+          "angle": 8
+        }
+      ],
+      "date_modified": "12/24/2025 10:46 AM"
+    },
+    {
+      "product_id": 5091,
+      "sku": "EX1037WW",
+      "primary_image": null,
+      "product_images": [],
+      "product_videos": [],
+      "product_asset_360": [],
+      "date_modified": "1/1/1970 12:00 AM"
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "first_page_url": "https://api.skulytics.io/v3/e-commerce/product/assets?page=1&sku=EX1000SS",
+    "from": 1,
+    "last_page": 1,
+    "last_page_url": "https://api.skulytics.io/v3/e-commerce/product/assets?page=1&sku=EX1000SS",
+    "next_page_url": null,
+    "path": "https://api.skulytics.io/v3/e-commerce/product/assets",
+    "per_page": 10,
+    "prev_page_url": null,
+    "to": 2,
+    "total": 2
+  },
+  "errors": null
+}

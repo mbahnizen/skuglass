@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkuGlass</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header / Navigation Bar -->
+    <header class="app-header">
+      <div class="brand-title">
+        <img class="app-logo-icon" src="app-logo.png" alt="SkuGlass" />
+        <span class="app-title-text">SkuGlass</span>
+      </div>
+
+      <div class="header-actions">
+        <!-- Theme Toggle (Sun / Moon) -->
+        <button id="theme-toggle-btn" class="icon-btn" title="Toggle Theme (Light / Dark)" aria-label="Toggle Theme">
+          <svg id="theme-icon-sun" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg id="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <!-- Front History Quick Scroll Button -->
+        <button id="history-nav-btn" class="icon-btn" title="Scroll to Recent History" aria-label="Recent History">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </button>
+
+        <!-- Token Settings (Gear Icon) -->
+        <button id="token-nav-btn" class="icon-btn" title="API Settings" aria-label="Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Search Form Bar -->
+    <section id="search-section" class="search-section">
+      <form id="sku-search-form" class="search-form">
+        <div class="search-input-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            id="sku-input" 
+            placeholder="Enter SKU (e.g. JVW5301SJSS)" 
+            autocomplete="off"
+            spellcheck="false"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded="false"
+            aria-controls="sku-autocomplete-list"
+            required
+          />
+          <button type="button" id="clear-search-btn" class="clear-btn" aria-label="Clear Search" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <div id="sku-autocomplete-list" class="autocomplete-dropdown hidden" role="listbox" aria-label="SKU Autocomplete Suggestions"></div>
+        </div>
+        <button type="submit" id="search-submit-btn" class="primary-btn">
+          <span id="search-btn-label">Look Up</span>
+          <span id="search-btn-spinner" class="btn-spinner hidden"></span>
+        </button>
+      </form>
+      <div id="multi-sku-notice" class="multi-sku-notice hidden"></div>
+    </section>
+
+    <!-- Screen Reader Live Region -->
+    <div id="aria-announce-region" class="sr-only" aria-live="polite"></div>
+
+    <!-- Main View Switcher Container -->
+    <main class="main-content">
+
+      <!-- Main Results & Front Page View -->
+      <div id="results-view" class="view-panel active">
+        <!-- Initial Blank / Setup Token Prompt State -->
+        <div id="initial-state" class="state-card fade-in">
+          <!-- Unconfigured Lock Icon -->
+          <svg id="initial-icon-lock" class="state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <!-- Configured Shield Check Icon -->
+          <svg id="initial-icon-check" class="state-icon text-active hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <path d="M9 12l2 2 4-4"></path>
+          </svg>
+
+          <h3 id="initial-title">Welcome to SkuGlass</h3>
+          <p id="initial-state-text">Enter your Skulytics Bearer Token to begin live SKU queries — SkuGlass pulls product data directly from the Skulytics API.</p>
+          
+          <button id="setup-token-hero-btn" class="primary-btn">Configure Bearer Token</button>
+          <button id="change-token-link-btn" class="secondary-btn small-btn hidden">Change Token</button>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading-state" class="state-card fade-in hidden">
+          <div class="spinner"></div>
+          <p>Fetching product details from Skulytics...</p>
+        </div>
+
+        <!-- 401 Token Rejected Error State -->
+        <div id="unauthorized-state" class="state-card error-card fade-in hidden">
+          <svg class="state-icon warning-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <h3>Token Rejected</h3>
+          <p>Your bearer token was rejected by api.skulytics.io (401 Unauthorized).</p>
+          <button id="open-token-entry-btn" class="primary-btn">Enter Token</button>
+        </div>
+
+        <!-- 500 / Network Error State (Distinct from SKU Not Found) -->
+        <div id="network-error-state" class="state-card error-card fade-in hidden">
+          <svg class="state-icon warning-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <h3>Network / Server Error</h3>
+          <p id="network-error-msg-text">Could not connect to Skulytics API.</p>
+          <button id="retry-lookup-btn" class="primary-btn">Retry Lookup</button>
+        </div>
+
+        <!-- SKU Not Found State -->
+        <div id="not-found-state" class="state-card fade-in hidden">
+          <svg class="state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+          </svg>
+          <h3>No Product Found</h3>
+          <p id="not-found-sku-text">No product found for exact match SKU.</p>
+          <button id="try-fuzzy-btn" class="secondary-btn">Try Fuzzy Match</button>
+        </div>
+
+        <!-- Fuzzy Multiple Results Picker State -->
+        <div id="fuzzy-picker-state" class="group-box fade-in hidden">
+          <div class="group-title">Multiple Matches Found</div>
+          <div id="fuzzy-picker-list" class="picker-list"></div>
+        </div>
+
+        <!-- PRIMARY PRODUCT CARD (Matching Mockup Visual Language) -->
+        <article id="primary-card" class="mockup-card card-animate hidden">
+          
+          <!-- 1. Header Row: Brand Avatar + SKU Pill + Status Glow Pill + 1-Click Copy & View JSON Buttons -->
+          <div class="card-header-row">
+            <div class="header-left">
+              <div id="card-brand-avatar" class="brand-avatar-container"></div>
+              <div id="card-sku-pill" class="sku-pill-badge">SKU: JVW5301SJSS</div>
+              <span id="cache-badge" class="cache-indicator-badge hidden" title="Data loaded from local 15-min cache">Cached</span>
+            </div>
+
+            <div class="header-right">
+              <!-- Refresh Cache Button -->
+              <button id="refresh-lookup-btn" class="json-action-btn icon-only" title="Refresh product data from Skulytics API" aria-label="Refresh Data">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="23 4 23 10 17 10"></polyline>
+                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                </svg>
+              </button>
+
+              <!-- 1-Click Copy & View Raw API JSON Buttons -->
+              <div class="json-actions-group">
+                <button id="copy-json-btn" class="json-action-btn" title="Copy Raw API JSON Payload (1-Click)" aria-label="Copy Raw JSON">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="16 18 22 12 16 6"></polyline>
+                    <polyline points="8 6 2 12 8 18"></polyline>
+                  </svg>
+                  <span>Copy JSON</span>
+                  <span id="copy-json-badge" class="copy-json-badge copy-json-toast hidden">Copied!</span>
+                </button>
+
+                <button id="view-json-btn" class="json-action-btn icon-only" title="View Raw API JSON Structure" aria-label="View Raw JSON">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                </button>
+              </div>
+
+              <div id="main-status-pill" class="status-pill status-active">
+                <span id="main-status-text">Active</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Hero Product Title -->
+          <h1 id="card-name" class="mockup-product-title">30" Wall-Mount Pyramid Chimney Hood</h1>
+          <div id="discontinued-date-notice" class="discontinued-date-banner hidden"></div>
+
+          <!-- Hero Product Image Container (Clickable -> Jumps to Assets Tab) -->
+          <div id="card-hero-image-wrapper" class="hero-img-container hidden" title="Click to view full image gallery in Assets tab">
+            <img id="card-hero-img" class="card-hero-img" src="" alt="Product Primary Image" />
+          </div>
+
+          <!-- 3. Per-Zipcode Market Status Table & Single-Row Strip -->
+          <div id="single-zipcode-strip" class="single-zipcode-strip hidden"></div>
+
+          <div id="zipcode-table-container" class="table-container">
+            <table class="status-table">
+              <thead>
+                <tr>
+                  <th>Zipcode</th>
+                  <th>Status</th>
+                  <th>Date Discontinued</th>
+                </tr>
+              </thead>
+              <tbody id="zipcode-status-tbody">
+                <!-- Zipcode rows populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 4. Metadata Strip (Responsive 3-Column / 2-Row for Narrow Panels) -->
+          <div class="metadata-strip-3col">
+            <div class="meta-col taxonomy-col">
+              <span class="meta-col-label">TAXONOMY</span>
+              <span id="card-taxonomy" class="meta-col-val">Appliances &gt; Hoods</span>
+            </div>
+
+            <div class="meta-col border-left">
+              <span class="meta-col-label">UPC</span>
+              <div class="upc-inline-wrapper">
+                <span id="card-upc" class="meta-col-val font-mono">084691814399</span>
+                <button id="copy-upc-btn" class="copy-icon-link" title="Copy UPC">
+                  <svg id="copy-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  <span id="copy-feedback" class="copy-feedback-badge hidden">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 12px; height: 12px;">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <div class="meta-col border-left">
+              <span class="meta-col-label">LAST UPDATED</span>
+              <span id="card-date-modified" class="meta-col-val">12/29/2022</span>
+            </div>
+          </div>
+
+          <!-- 5. Colorways Swatches & Accessories Row -->
+          <div class="swatch-accessory-grid">
+            <div id="colorways-section" class="grid-col hidden">
+              <span class="grid-col-label">COLORWAYS</span>
+              <div id="colorway-swatches" class="swatches-flex"></div>
+              <!-- Visible colorway names caption line -->
+              <div id="colorway-names-caption" class="colorway-caption-text"></div>
+            </div>
+
+            <div id="related-section" class="grid-col hidden">
+              <span class="grid-col-label">ACCESSORIES</span>
+              <div id="accessory-inline-links" class="inline-links-wrap"></div>
+            </div>
+          </div>
+
+          <!-- 6. Replacement Chain (if present) -->
+          <div id="replacement-section" class="card-inner-group hidden">
+            <span class="grid-col-label">REPLACEMENT CHAIN</span>
+            <div id="replacement-chips" class="chip-container"></div>
+          </div>
+
+          <!-- 7. Key Specifications Table -->
+          <div id="filters-section" class="card-inner-group hidden">
+            <span class="grid-col-label">KEY SPECIFICATIONS</span>
+            <div id="filter-groups-container" class="spec-table-container"></div>
+          </div>
+
+          <!-- 8. Segmented Pill Tab Bar with Left/Right Scroll Arrows -->
+          <div id="lazy-tabs-container" class="lazy-tabs-section">
+            <div class="tab-scroll-wrapper">
+              <button id="tab-scroll-left-btn" class="tab-scroll-nav-btn" aria-label="Scroll Tabs Left" title="Scroll Tabs Left">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+              </button>
+
+              <div class="segmented-pill-track" role="tablist" aria-label="Product Details Tabs">
+                <button id="tab-btn-pricing" class="segment-tab-pill active" role="tab" aria-selected="true" aria-controls="tab-content-display" tabindex="0" data-tab="pricing">Pricing</button>
+                <button id="tab-btn-specifications" class="segment-tab-pill" role="tab" aria-selected="false" aria-controls="tab-content-display" tabindex="-1" data-tab="specifications">Specifications</button>
+                <button id="tab-btn-assets" class="segment-tab-pill" role="tab" aria-selected="false" aria-controls="tab-content-display" tabindex="-1" data-tab="assets">Assets</button>
+                <button id="tab-btn-documents" class="segment-tab-pill" role="tab" aria-selected="false" aria-controls="tab-content-display" tabindex="-1" data-tab="documents">Documents</button>
+                <button id="tab-btn-features" class="segment-tab-pill" role="tab" aria-selected="false" aria-controls="tab-content-display" tabindex="-1" data-tab="features">Features</button>
+                <button id="tab-btn-certifications" class="segment-tab-pill" role="tab" aria-selected="false" aria-controls="tab-content-display" tabindex="-1" data-tab="certifications">Certifications</button>
+                <button id="tab-btn-rebates" class="segment-tab-pill" role="tab" aria-selected="false" aria-controls="tab-content-display" tabindex="-1" data-tab="rebates">Rebates</button>
+              </div>
+
+              <button id="tab-scroll-right-btn" class="tab-scroll-nav-btn" aria-label="Scroll Tabs Right" title="Scroll Tabs Right">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+
+            <div class="tab-content-panel">
+              <div id="tab-loading" class="tab-loading-spinner hidden">
+                <div class="mini-spinner"></div>
+                <span>Fetching tab payload...</span>
+              </div>
+              <div id="tab-content-display" class="tab-display-body fade-tab-content" role="tabpanel" aria-labelledby="tab-btn-pricing">
+                <!-- Lazy tab contents -->
+              </div>
+            </div>
+          </div>
+
+        </article>
+
+        <!-- FRONT PAGE EMBEDDED HISTORY SECTION -->
+        <section id="front-history-section" class="front-history-card card-animate">
+          <div class="front-history-header">
+            <div class="history-header-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; color: var(--accent-primary);">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <h3>Recent Lookups</h3>
+            </div>
+
+            <div class="history-header-actions">
+              <button id="delete-selected-btn" class="secondary-btn small-btn danger-btn hidden">Delete Selected</button>
+              <button id="clear-all-history-btn" class="secondary-btn small-btn danger-btn" title="Clear all search history">Clear All</button>
+            </div>
+          </div>
+
+          <div class="history-controls-row">
+            <input type="text" id="history-search-input" placeholder="Search history by SKU, name, or brand..." />
+            <button id="toggle-pinned-only-btn" class="pin-filter-pill" title="Toggle Pinned Items Filter" aria-label="Show Pinned Only">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 17v5M9 2h6l-1 5h3l-2 5H9l-2-5h3L9 2z"></path>
+              </svg>
+              <span>Pinned</span>
+              <span id="pinned-count-badge" class="pinned-count-badge hidden">0</span>
+            </button>
+          </div>
+
+          <div id="history-list-container" class="history-list"></div>
+        </section>
+      </div>
+
+      <!-- Settings View -->
+      <div id="token-view" class="view-panel hidden">
+        <div class="view-header">
+          <button id="close-token-btn" class="back-btn" title="Back to Lookup">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Back</span>
+          </button>
+          <h3 class="view-title">API Settings</h3>
+        </div>
+
+        <div class="settings-card">
+          <label for="token-input" class="settings-label">Skulytics Bearer Token</label>
+          <p class="settings-help">Stored safely in <code>chrome.storage.local</code> and read exclusively inside the background service worker.</p>
+          <p class="settings-help">Your token is stored locally in this browser only and is never sent anywhere except <code>api.skulytics.io</code>.</p>
+
+          <div class="token-input-row">
+            <input type="password" id="token-input" placeholder="Paste bearer token..." />
+            <button id="toggle-token-vis-btn" class="icon-btn small-icon-btn" title="Toggle visibility">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+
+          <div class="settings-actions">
+            <button id="save-token-btn" class="primary-btn">
+              <span id="save-token-label">Save Token</span>
+              <span id="save-token-spinner" class="btn-spinner hidden"></span>
+            </button>
+            <button id="clear-token-btn" class="secondary-btn danger-btn">Clear Token</button>
+          </div>
+
+          <div id="token-status-msg" class="status-message hidden"></div>
+        </div>
+      </div>
+
+    </main>
+
+    <footer class="app-footer">
+      <svg class="app-footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+      </svg>
+      <span>Unofficial<span class="app-footer-dot">&middot;</span>Data from Skulytics<span class="app-footer-dot">&middot;</span>Not affiliated with Skulytics</span>
+    </footer>
+  </div>
+
+  <!-- RAW API JSON VIEWER MODAL (STATUS API DATA FIRST ORDER) -->
+  <div id="json-viewer-modal" class="modal-backdrop hidden">
+    <div class="json-modal-dialog">
+      <div class="json-modal-header">
+        <div class="json-modal-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; color: var(--accent-primary);">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+          </svg>
+          <h3>Raw API JSON Payload</h3>
+          <span id="modal-payload-badge" class="json-payload-badge">Status API</span>
+        </div>
+
+        <div class="json-modal-actions">
+          <button id="modal-copy-json-btn" class="primary-btn small-btn" title="Copy active payload JSON">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 13px; height: 13px;">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+            <span>Copy JSON</span>
+          </button>
+          <button id="close-json-modal-btn" class="icon-btn" title="Close Viewer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="json-modal-selector-track">
+        <button class="json-select-tab active" data-target="status">Status API Data</button>
+        <button class="json-select-tab" data-target="product">Product API Data</button>
+        <button class="json-select-tab" data-target="combined">Combined Payload</button>
+        <button class="json-select-tab" data-target="tab" disabled>Active Tab</button>
+      </div>
+
+      <div class="json-modal-body">
+        <div id="json-viewer-code" class="json-code-block"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- In-Panel Asset Lightbox Modal for Enlarged Preview with Glass Navigation & Inline SVGs -->
+  <div id="image-lightbox-modal" class="modal-backdrop hidden">
+    <div class="lightbox-dialog">
+      <button id="close-lightbox-btn" class="lightbox-close-btn" aria-label="Close Preview" title="Close Preview">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="lightbox-image-container">
+        <button id="lightbox-prev-btn" class="lightbox-nav-btn prev-btn" aria-label="Previous Image" title="Previous Image (Left Arrow)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
+        <img id="lightbox-img" src="" alt="Enlarged Asset Preview" />
+
+        <button id="lightbox-next-btn" class="lightbox-nav-btn next-btn" aria-label="Next Image" title="Next Image (Right Arrow)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <!-- In-Panel Action Confirmation Modal (Replaces browser confirm()) -->
+  <div id="confirm-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+    <div class="confirm-modal-dialog">
+      <h3 id="confirm-modal-title" class="confirm-modal-title">Confirm Action</h3>
+      <p id="confirm-modal-msg" class="confirm-modal-msg">Are you sure you want to proceed?</p>
+      <div class="confirm-modal-actions">
+        <button id="confirm-modal-cancel-btn" class="secondary-btn">Cancel</button>
+        <button id="confirm-modal-ok-btn" class="danger-btn">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="sidepanel.js"></script>
+</body>
+</html>

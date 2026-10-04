@@ -1,0 +1,188 @@
+curl --request GET \
+     --url https://api.skulytics.io/v3/e-commerce/product/price \
+     --header 'accept: application/json'
+
+{
+  "code": "200",
+  "message": "Success",
+  "data": [
+    {
+      "product_id": 5169,
+      "sku": "EX1111FS",
+      "market": {
+        "country": {
+          "country_id": "1",
+          "country_name": "United States",
+          "country_code": "US"
+        },
+        "zipcode": 12345
+      },
+      "price": {
+        "manufacturer_price": {
+          "map": {
+            "price": 654,
+            "last_updated": "4/27/2024 6:48 AM"
+          },
+          "msrp": {
+            "price": 654,
+            "last_updated": "4/27/2024 6:47 AM"
+          },
+          "umrp": [
+            {
+              "territory": "No Territory",
+              "price": 0,
+              "last_updated": null
+            },
+            {
+              "territory": "Midwest",
+              "price": 0,
+              "last_updated": null
+            },
+            {
+              "territory": "Southeast",
+              "price": 0,
+              "last_updated": null
+            },
+            {
+              "territory": "West",
+              "price": 0,
+              "last_updated": null
+            }
+          ],
+          "pmap": {
+            "price": 0,
+            "start_date": null,
+            "end_date": null,
+            "last_updated": null
+          },
+          "pumrp": [
+            {
+              "territory": "No Territory",
+              "price": 0,
+              "start_date": null,
+              "end_date": null,
+              "last_updated": null
+            },
+            {
+              "territory": "Midwest",
+              "price": 0,
+              "start_date": null,
+              "end_date": null,
+              "last_updated": null
+            },
+            {
+              "territory": "Southeast",
+              "price": 0,
+              "start_date": null,
+              "end_date": null,
+              "last_updated": null
+            },
+            {
+              "territory": "West",
+              "price": 0,
+              "start_date": null,
+              "end_date": null,
+              "last_updated": null
+            }
+          ],
+          "lrp": [
+            {
+              "territory": "No Territory",
+              "price": 0,
+              "last_updated": null
+            },
+            {
+              "territory": "Midwest",
+              "price": 0,
+              "last_updated": null
+            },
+            {
+              "territory": "Southeast",
+              "price": 0,
+              "last_updated": null
+            },
+            {
+              "territory": "West",
+              "price": 0,
+              "last_updated": null
+            }
+          ]
+        },
+        "competitor_price": {
+          "lap": {
+            "lowest_price": {
+              "price": 0,
+              "source": null,
+              "last_updated": "2/23/2026 9:30 PM"
+            },
+            "lowes": {
+              "price": 0,
+              "last_updated": "2/23/2026 9:30 PM"
+            },
+            "homedepot": {
+              "price": 0,
+              "last_updated": "2/23/2026 9:30 PM"
+            },
+            "bestbuy": {
+              "price": 0,
+              "last_updated": "2/23/2026 9:30 PM"
+            },
+            "ajmadison": {
+              "price": 0,
+              "last_updated": "2/23/2026 9:30 PM"
+            },
+            "pc_richard_son": {
+              "price": 0,
+              "last_updated": "2/23/2026 9:30 PM"
+            },
+            "official_website": {
+              "price": 0,
+              "last_updated": "2/23/2026 9:30 PM"
+            }
+          },
+          "lcp": {
+            "lowest_price": {
+              "price": 0,
+              "source": null,
+              "last_updated": "2/23/2026 9:30 PM"
+            },
+            "lowes": {
+              "price": 0,
+              "last_updated": "2/23/2026 9:30 PM"
+            },
+            "homedepot": {
+              "price": 0,
+              "last_updated": "2/23/2026 9:30 PM"
+            },
+            "bestbuy": {
+              "price": 0,
+              "last_updated": "2/23/2026 9:30 PM"
+            },
+            "ajmadison": {
+              "price": 0,
+              "last_updated": "2/23/2026 9:30 PM"
+            },
+            "pc_richard_son": {
+              "price": 0,
+              "last_updated": "2/23/2026 9:30 PM"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "first_page_url": "https://api.skulytics.io/v3/e-commerce/product/price?page=1&sku=EX1111FS",
+    "from": 1,
+    "last_page": 1,
+    "last_page_url": "https://api.skulytics.io/v3/e-commerce/product/price?page=1&sku=EX1111FS",
+    "next_page_url": null,
+    "path": "https://api.skulytics.io/v3/e-commerce/product/price",
+    "per_page": 10,
+    "prev_page_url": null,
+    "to": 1,
+    "total": 1
+  },
+  "errors": null
+}

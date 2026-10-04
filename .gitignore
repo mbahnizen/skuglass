@@ -1,0 +1,17 @@
+# Never commit a bearer token. The extension keeps it in chrome.storage.local
+# and tools/ scripts read it from the environment, so no file in this repo
+# should ever hold one - these patterns are a backstop, not the mechanism.
+.env
+.env.*
+*.token
+token.txt
+
+# Node, if tooling ever grows dependencies
+node_modules/
+
+# OS and editor noise
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+*.swp

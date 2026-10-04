@@ -1,0 +1,7 @@
+# Three different tools write this tree. Pin line endings so a diff never
+# shows a whole file as changed just because one of them normalised newlines.
+* text=auto eol=lf
+
+# Binary assets - never touch these
+*.png binary
+*.woff2 binary

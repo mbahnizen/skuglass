@@ -1,0 +1,157 @@
+curl --request GET \
+     --url https://api.skulytics.io/v3/e-commerce/product/specs \
+     --header 'accept: application/json'
+
+{
+  "code": "200",
+  "message": "Success",
+  "data": [
+    {
+      "product_id": 5000,
+      "sku": "EX1000SS",
+      "product_specs": [
+        {
+          "section": "Warranty",
+          "spec": "Parts",
+          "value": "1 Year"
+        },
+        {
+          "section": "Warranty",
+          "spec": "Labor",
+          "value": "1 Year"
+        },
+        {
+          "section": "WEIGHTS & DIMENSIONS",
+          "spec": "Overall Depth",
+          "value": "35.875 in"
+        },
+        {
+          "section": "WEIGHTS & DIMENSIONS",
+          "spec": "Overall Width",
+          "value": "35.75 in"
+        },
+        {
+          "section": "WEIGHTS & DIMENSIONS",
+          "spec": "Overall Height",
+          "value": "69.875 in"
+        },
+        {
+          "section": "Other",
+          "spec": "Back Air Clearances",
+          "value": "2 in"
+        },
+        {
+          "section": "Other",
+          "spec": "Top Air Clearances",
+          "value": "1 in"
+        },
+        {
+          "section": "Other",
+          "spec": "Side Air Clearances",
+          "value": "0.125 in"
+        },
+        {
+          "section": "Dimensions & Weight",
+          "spec": "Width",
+          "value": "35.75 in."
+        },
+        {
+          "section": "Dimensions & Weight",
+          "spec": "Height",
+          "value": "69.88 in."
+        },
+        {
+          "section": "Dimensions & Weight",
+          "spec": "Length",
+          "value": "35.88 in."
+        },
+        {
+          "section": "Dimensions & Weight",
+          "spec": "Weight",
+          "value": "308 lbs."
+        },
+        {
+          "section": "Number of Boxes, Shipping Dimensions, & Shipping Weight",
+          "spec": "Number of Boxes",
+          "value": "1"
+        },
+        {
+          "section": "Number of Boxes, Shipping Dimensions, & Shipping Weight",
+          "spec": "Shipping Width",
+          "value": "40.75 in."
+        },
+        {
+          "section": "Number of Boxes, Shipping Dimensions, & Shipping Weight",
+          "spec": "Shipping Height",
+          "value": "74.88 in."
+        },
+        {
+          "section": "Number of Boxes, Shipping Dimensions, & Shipping Weight",
+          "spec": "Shipping Length",
+          "value": "40.88 in."
+        },
+        {
+          "section": "Number of Boxes, Shipping Dimensions, & Shipping Weight",
+          "spec": "Shipping Weight",
+          "value": "348 lbs."
+        },
+        {
+          "section": "Number of Boxes, Shipping Dimensions, & Shipping Weight",
+          "spec": "Total of Shipping Weight",
+          "value": "348 lbs."
+        },
+        {
+          "section": "Number of Boxes, Shipping Dimensions, & Shipping Weight",
+          "spec": "Source",
+          "value": "Calculation"
+        },
+        {
+          "section": "Cubic Feet Measurement & Dimensional Weight",
+          "spec": "Cubic Feet Measurement",
+          "value": "51.86 ft³"
+        },
+        {
+          "section": "Cubic Feet Measurement & Dimensional Weight",
+          "spec": "Dimensional Weight",
+          "value": "644.73 lbs."
+        },
+        {
+          "section": "Cubic Feet Measurement & Dimensional Weight",
+          "spec": "Total of Cubes",
+          "value": "51.86 ft³"
+        },
+        {
+          "section": "Cubic Feet Measurement & Dimensional Weight",
+          "spec": "Total of Dimensional Weight",
+          "value": "644.73 lbs."
+        },
+        {
+          "section": "FEATURES",
+          "spec": "Temperature Management Features",
+          "value": "Turbo Cool setting"
+        }
+      ],
+      "date_modified": "6/16/2026 6:04 AM"
+    },
+    {
+      "product_id": 5091,
+      "sku": "EX1037WW",
+      "product_specs": [],
+      "date_modified": "5/20/2026 4:12 AM"
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "first_page_url": "https://api.skulytics.io/v3/e-commerce/product/specs?page=1&sku=EX1000SS",
+    "from": 1,
+    "last_page": 1,
+    "last_page_url": "https://api.skulytics.io/v3/e-commerce/product/specs?page=1&sku=EX1000SS",
+    "next_page_url": null,
+    "path": "https://api.skulytics.io/v3/e-commerce/product/specs",
+    "per_page": 10,
+    "prev_page_url": null,
+    "to": 2,
+    "total": 2
+  },
+  "errors": null
+}

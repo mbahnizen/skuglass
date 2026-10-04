@@ -1,0 +1,46 @@
+curl --request GET \
+     --url https://api.skulytics.io/v3/e-commerce/product/certifications \
+     --header 'accept: application/json'
+
+{
+  "code": "200",
+  "message": "Success",
+  "data": [
+    {
+      "product_id": 5104,
+      "sku": "EX1074BB",
+      "product_certifications": [
+        {
+          "certification": "CEC Regulated",
+          "description": null,
+          "url": null
+        },
+        {
+          "certification": "California Prop 65",
+          "description": null,
+          "url": "https://assets.example.com/images/sample-22.webp"
+        },
+        {
+          "certification": "MADE IN AMERICA: Sample Content Claim",
+          "description": null,
+          "url": null
+        }
+      ],
+      "date_modified": "3/18/2025 8:11 PM"
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "first_page_url": "https://api.skulytics.io/v3/e-commerce/product/certifications?page=1&sku=EX1074BB",
+    "from": 1,
+    "last_page": 1,
+    "last_page_url": "https://api.skulytics.io/v3/e-commerce/product/certifications?page=1&sku=EX1074BB",
+    "next_page_url": null,
+    "path": "https://api.skulytics.io/v3/e-commerce/product/certifications",
+    "per_page": 10,
+    "prev_page_url": null,
+    "to": 1,
+    "total": 1
+  },
+  "errors": null
+}
