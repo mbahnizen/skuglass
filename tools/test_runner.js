@@ -75,7 +75,7 @@ assert(JSON.stringify(flattenRecord([[1], []])) === '[["[0][0]",1],["[1]",[]]]',
 
 console.log('\n6. Testing comparison states:');
 const stateCases = [
-  [729, '729', 'format'], ['84691814399', '084691814399', 'format'],
+  [729, '729', 'format'], ['12345678905', '012345678905', 'format'],
   ['05/07/2025', '5/7/2025', 'format'], ['05/07/2025 06:04 AM', '5/7/2025 6:04 am', 'format'],
   [' Active ', 'active', 'format'], ['1.50', 1.5, 'format'], ['-2e2', -200, 'format'],
   ['000', 0, 'format'], ['09007199254740993', '9007199254740993', 'format'],
@@ -84,7 +84,7 @@ const stateCases = [
   [false, 'false', 'different'], [[], {}, 'different'], ['A', 'B', 'different'],
   ['5/7/2025 6:04 AM', '5/7/2025 6:04 PM', 'different'],
   ['5/7/2025', '5/7/2025 12:00 AM', 'different'],
-  [null, null, 'same'], [[], [], 'same'], [{}, {}, 'same'], ['084691814399', '084691814399', 'same']
+  [null, null, 'same'], [[], [], 'same'], [{}, {}, 'same'], ['012345678905', '012345678905', 'same']
 ];
 for (const [left, right, expected] of stateCases) {
   const result = compareVersions({ v1: { value: left }, v2: { value: right }, v3: null });
