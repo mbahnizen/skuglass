@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import { normalizeSkus, escapeHtml, dedupeAndGroupFilters, computeOverallStatus } from '../lib/utils.js';
 import { ALIASES, flattenRecord, compareVersions, filterRows } from '../lib/compare.js';
+import { VERSION_ENDPOINTS, versionProductUrl } from '../lib/versions.js';
 
 console.log('=== SkuGlass unit tests ===\n');
 
@@ -169,6 +170,28 @@ assert(noZip.rows.find(row => row.path === 'status').state === 'same', 'without 
 const unknownZip = compareVersions({ v3: { markets: [{ country: { zipcodes: [{ status: 'Active' }] } }] } });
 assert(unknownZip.rows[0].path === 'markets[0].country.zipcodes[0].status', 'an absent zipcode identifier keeps its raw path instead of inventing one');
 assert(JSON.stringify(records) === before && records.v3.markets[1].country.zipcodes[0].zipcode === '01234', 'frozen inputs remain unchanged');
+
+console.log('\n9. Testing versionProductUrl:');
+const versionBaseUrl = 'https://api.skulytics.io';
+assert(Object.keys(VERSION_ENDPOINTS).join(',') === 'v1,v2', 'exports only the two legacy versions');
+for (const version of ['v1', 'v2']) {
+  const prefix = `${versionBaseUrl}${VERSION_ENDPOINTS[version]}?sku=`;
+  assert(versionProductUrl(versionBaseUrl, version, 'TEST-SKU-1') === `${prefix}TEST-SKU-1`,
+    `${version} uses the exported endpoint and only the sku parameter`);
+  assert(versionProductUrl(versionBaseUrl, version, 'AB 12/3') === `${prefix}AB%2012%2F3`,
+    `${version} encodes spaces and slashes in the SKU`);
+  assert(versionProductUrl(versionBaseUrl, version, 'TEST&?#%+') === `${prefix}TEST%26%3F%23%25%2B`,
+    `${version} encodes query delimiters and literal percent and plus signs`);
+  for (const sku of ['', undefined, null, 0, 123, false, {}, [], ['TEST-SKU-1']]) {
+    assert(versionProductUrl(versionBaseUrl, version, sku) === null,
+      `${version} rejects empty or non-string SKU ${JSON.stringify(sku)}`);
+  }
+}
+for (const version of ['v3', '', undefined, null, 'v4', 'V1', 'toString', '__proto__',
+  'constructor', 'hasOwnProperty', 1, {}, ['v1']]) {
+  assert(versionProductUrl(versionBaseUrl, version, 'TEST-SKU-1') === null,
+    `rejects unsupported version ${JSON.stringify(version)}`);
+}
 
 console.log(`\n=== SUMMARY: ${passedTests}/${totalTests} tests passed cleanly! ===`);
 if (passedTests !== totalTests) process.exitCode = 1;

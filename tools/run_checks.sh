@@ -4,6 +4,7 @@ node --check sidepanel/sidepanel.js
 node --check background/service-worker.js
 node --check lib/utils.js
 node --check lib/compare.js
+node --check lib/versions.js
 
 echo "=== 2. Test Runner ==="
 node tools/test_runner.js
