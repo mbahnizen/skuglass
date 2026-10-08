@@ -1,6 +1,8 @@
 // Background Service Worker for SkuGlass
 // All network requests and token custody happen strictly within this service worker.
 
+import { VERSION_ENDPOINTS, versionProductUrl } from '../lib/versions.js';
+
 const BASE_URL = 'https://api.skulytics.io';
 const CACHE_TTL_MS = 15 * 60 * 1000; // 15-minute TTL for the per-SKU response cache; repeat lookups inside it cost no API quota
 
@@ -71,6 +73,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
   if (request.type === 'FETCH_LAZY_TAB') {
     handleLazyTabFetch(request.sku, request.tabKey, request.bypassCache || false)
+      .then(sendResponse)
+      .catch(err => sendResponse({ status: 500, error: 'NETWORK_ERROR', message: err.message }));
+    return true; // Async response
+  }
+
+  if (request.type === 'FETCH_VERSION_PRODUCT') {
+    handleVersionProductFetch(request.sku, request.version, request.bypassCache || false)
       .then(sendResponse)
       .catch(err => sendResponse({ status: 500, error: 'NETWORK_ERROR', message: err.message }));
     return true; // Async response
@@ -226,6 +235,65 @@ async function handleLazyTabFetch(sku, tabKey, bypassCache = false) {
 
     return { status: 200, data, cached: false, endpoint: path };
 
+  } catch (err) {
+    return { status: 500, error: 'NETWORK_ERROR', message: err.message };
+  }
+}
+
+/** Fetches one legacy product record on demand, including empty results. */
+async function handleVersionProductFetch(sku, version, bypassCache = false) {
+  const url = versionProductUrl(BASE_URL, version, sku);
+  if (url === null) {
+    return { status: 400, error: 'UNKNOWN_VERSION', message: 'Choose v1 or v2 and provide a non-empty SKU string' };
+  }
+
+  // Read the token on every valid call, including session cache hits.
+  const storage = await chrome.storage.local.get(['SKULYTICS_TOKEN']);
+  const token = storage.SKULYTICS_TOKEN;
+  if (!token) {
+    return { status: 401, error: 'NO_TOKEN', message: 'Token rejected — enter it again' };
+  }
+
+  const endpoint = VERSION_ENDPOINTS[version];
+  const cacheKey = `CACHE_VERSION_${version}_${sku}`;
+  if (!bypassCache) {
+    const sessionData = await chrome.storage.session.get([cacheKey]);
+    if (sessionData[cacheKey]) {
+      const entry = sessionData[cacheKey];
+      if (Date.now() - entry.timestamp < CACHE_TTL_MS) {
+        return { status: 200, data: entry.data, found: Array.isArray(entry.data?.data) && entry.data.data.length > 0,
+          cached: true, version, endpoint };
+      }
+    }
+  }
+
+  const headers = {
+    'Authorization': `Bearer ${token}`,
+    'Accept': 'application/json'
+  };
+
+  try {
+    const res = await fetch(url, { headers });
+    if (res.status === 401) {
+      return { status: 401, error: 'TOKEN_REJECTED', message: 'Token rejected — check the value and try again' };
+    }
+    if (res.status === 429) {
+      return { status: 429, error: 'RATE_LIMITED', message: 'Rate limit reached — try again shortly' };
+    }
+    if (!res.ok) {
+      return { status: res.status, error: 'API_ERROR', message: `${version} product API returned status ${res.status}` };
+    }
+
+    const data = await res.json();
+    await chrome.storage.session.set({
+      [cacheKey]: {
+        timestamp: Date.now(),
+        data
+      }
+    });
+
+    return { status: 200, data, found: Array.isArray(data?.data) && data.data.length > 0,
+      cached: false, version, endpoint };
   } catch (err) {
     return { status: 500, error: 'NETWORK_ERROR', message: err.message };
   }
