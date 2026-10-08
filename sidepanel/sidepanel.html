@@ -212,6 +212,13 @@
             </div>
           </div>
 
+          <div class="version-switcher" role="group" aria-label="API version">
+            <button type="button" class="version-switch-btn" data-version="v1" aria-pressed="false">v1</button>
+            <button type="button" class="version-switch-btn" data-version="v2" aria-pressed="false">v2</button>
+            <button type="button" class="version-switch-btn" data-version="v3" aria-pressed="true">v3</button>
+          </div>
+
+          <div id="v3-card-body">
           <!-- 2. Hero Product Title -->
           <h1 id="card-name" class="mockup-product-title">30" Wall-Mount Pyramid Chimney Hood</h1>
           <div id="discontinued-date-notice" class="discontinued-date-banner hidden"></div>
@@ -333,6 +340,16 @@
               </div>
             </div>
           </div>
+
+          </div>
+
+          <section id="version-panel" class="version-panel hidden" aria-labelledby="version-panel-heading">
+            <h2 id="version-panel-heading" class="version-panel-heading"></h2>
+            <p id="version-loading" class="version-loading hidden">Loading product record...</p>
+            <div id="version-message" class="version-message hidden"></div>
+            <div id="version-viewer" class="version-viewer hidden"></div>
+            <button id="version-retry-btn" type="button" class="secondary-btn version-retry-btn hidden">Retry</button>
+          </section>
 
         </article>
 

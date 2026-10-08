@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { normalizeSkus, escapeHtml, dedupeAndGroupFilters, computeOverallStatus } from '../lib/utils.js';
 import { ALIASES, flattenRecord, compareVersions, filterRows } from '../lib/compare.js';
-import { VERSION_ENDPOINTS, versionProductUrl } from '../lib/versions.js';
+import { VERSION_ENDPOINTS, versionProductUrl, describeVersionResponse } from '../lib/versions.js';
 
 console.log('=== SkuGlass unit tests ===\n');
 
@@ -191,6 +191,58 @@ for (const version of ['v3', '', undefined, null, 'v4', 'V1', 'toString', '__pro
   'constructor', 'hasOwnProperty', 1, {}, ['v1']]) {
   assert(versionProductUrl(versionBaseUrl, version, 'TEST-SKU-1') === null,
     `rejects unsupported version ${JSON.stringify(version)}`);
+}
+
+console.log('\n10. Testing describeVersionResponse:');
+const oneRecord = { sku: 'TEST-SKU-1' };
+const twoRecords = [oneRecord, { sku: 'TEST-SKU-2' }];
+const recordResult = describeVersionResponse('v1', 'TEST-SKU-1',
+  { status: 200, found: true, data: { data: [oneRecord] } });
+assert(recordResult.kind === 'record' && recordResult.message === null &&
+  recordResult.record === oneRecord && recordResult.recordCount === 1,
+  'one found record returns the first record and count 1');
+const multipleResult = describeVersionResponse('v2', 'TEST-SKU-1',
+  { status: 200, found: true, data: { data: twoRecords } });
+assert(multipleResult.kind === 'record' && multipleResult.record === oneRecord &&
+  multipleResult.recordCount === 2, 'two records return the first and count 2');
+const v1Empty = describeVersionResponse('v1', 'TEST-SKU-1',
+  { status: 200, found: false, data: { data: [] } });
+assert(v1Empty.kind === 'not-found' && v1Empty.record === null && v1Empty.recordCount === 0 &&
+  v1Empty.message === 'No v1 record for SKU "TEST-SKU-1". v1 covers appliances only, so furniture and mattress SKUs are not in it.',
+  'empty v1 result explains appliance-only coverage');
+const v2Empty = describeVersionResponse('v2', 'TEST-SKU-1',
+  { status: 200, found: false, data: { data: [] } });
+assert(v2Empty.kind === 'not-found' && v2Empty.message === 'No v2 record for SKU "TEST-SKU-1".',
+  'empty v2 result has its own message');
+const noData = describeVersionResponse('v2', 'TEST-SKU-1', { status: 200, found: true });
+assert(noData.kind === 'not-found' && noData.record === null && noData.recordCount === 0,
+  'status 200 without data is not found');
+const notFoundWithRecords = describeVersionResponse('v2', 'TEST-SKU-1',
+  { status: 200, found: false, data: { data: twoRecords } });
+assert(notFoundWithRecords.kind === 'not-found' && notFoundWithRecords.recordCount === 2,
+  'found must be true even when records exist');
+const unauthorized = describeVersionResponse('v1', 'TEST-SKU-1',
+  { status: 401, error: 'ANY_ERROR', data: { data: [oneRecord] } });
+assert(unauthorized.kind === 'unauthorized' && unauthorized.message === null &&
+  unauthorized.record === null && unauthorized.recordCount === 1,
+  '401 wins over response content or error code');
+const limited = describeVersionResponse('v2', 'TEST-SKU-1',
+  { status: 429, message: 'Please wait.' });
+assert(limited.kind === 'rate-limited' && limited.message === 'Please wait.' && limited.record === null,
+  '429 preserves the service-worker message');
+assert(describeVersionResponse('v1', 'TEST-SKU-1', { status: 429, message: '' }).message ===
+  'Rate limited. Try again shortly.', '429 without a message has a fallback');
+const errorMessage = describeVersionResponse('v2', 'TEST-SKU-1',
+  { status: 500, message: 'Network failed.' });
+assert(errorMessage.kind === 'error' && errorMessage.message === 'Could not load v2: Network failed.' &&
+  errorMessage.record === null, 'other errors include the response message');
+assert(describeVersionResponse('v1', 'TEST-SKU-1', { status: 503 }).message ===
+  'Could not load v1: HTTP 503', 'errors without a message include HTTP status');
+for (const response of [null, undefined]) {
+  const missing = describeVersionResponse('v1', 'TEST-SKU-1', response);
+  assert(missing.kind === 'error' && missing.message ===
+    'Could not load v1: no response from the service worker.' && missing.recordCount === 0,
+    `${response} response is a safe error`);
 }
 
 console.log(`\n=== SUMMARY: ${passedTests}/${totalTests} tests passed cleanly! ===`);

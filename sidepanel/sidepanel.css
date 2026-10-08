@@ -485,6 +485,88 @@ body {
   box-shadow: var(--card-ambient-shadow);
 }
 
+.version-switcher {
+  display: flex;
+  align-self: flex-start;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  background-color: var(--bg-secondary);
+}
+
+.version-switch-btn {
+  padding: 5px 12px;
+  border: 0;
+  border-radius: 7px;
+  background-color: transparent;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.version-switch-btn:hover:not([aria-pressed="true"]) {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.version-switch-btn[aria-pressed="true"] {
+  background-color: var(--accent-fill);
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .version-switch-btn[aria-pressed="true"] {
+  color: var(--bg-secondary);
+}
+
+.version-switch-btn[aria-pressed="true"]:focus-visible {
+  outline-color: var(--text-primary);
+}
+
+#v3-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.version-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.version-panel-heading {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.version-loading,
+.version-message {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.version-viewer {
+  max-width: 100%;
+  max-height: 55vh;
+  overflow: auto;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 10px 0;
+  background-color: var(--code-bg);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.version-retry-btn {
+  align-self: flex-start;
+}
+
 /* 1. Header Row: Brand Logo/Avatar + SKU Pill + Status Glow Pill + JSON Actions */
 .card-header-row {
   display: flex;
@@ -1832,7 +1914,7 @@ body {
 /* ---------------------------------------------------- */
 
 @media (prefers-reduced-motion: no-preference) {
-  .icon-btn, .primary-btn, .secondary-btn, .segment-tab-pill, .colorway-swatch, .chip-item, .accessory-inline-link, .asset-thumb-btn, .hero-img-container, .lightbox-close-btn, .lightbox-nav-btn, .doc-item-link, .feature-item-card, .rebate-item-card, .spec-row, .picker-item, .history-item, .pin-btn, .trash-btn, .tab-scroll-nav-btn, .pin-filter-pill, .json-action-btn, .json-select-tab {
+  .icon-btn, .primary-btn, .secondary-btn, .segment-tab-pill, .version-switch-btn, .colorway-swatch, .chip-item, .accessory-inline-link, .asset-thumb-btn, .hero-img-container, .lightbox-close-btn, .lightbox-nav-btn, .doc-item-link, .feature-item-card, .rebate-item-card, .spec-row, .picker-item, .history-item, .pin-btn, .trash-btn, .tab-scroll-nav-btn, .pin-filter-pill, .json-action-btn, .json-select-tab {
     transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
   }
 

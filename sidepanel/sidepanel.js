@@ -1,5 +1,6 @@
 import { parseSkulyticsDate } from '../lib/date-parser.js';
 import { normalizeSkus, dedupeAndGroupFilters, copyToClipboard, escapeHtml, formatJsonToHtml, computeOverallStatus } from '../lib/utils.js';
+import { describeVersionResponse } from '../lib/versions.js';
 
 // Application State (Pure Live Mode)
 const appMode = 'live'; 
@@ -25,6 +26,8 @@ let activeJsonTab = 'status';
 
 // Race-Condition Prevention State for Lazy Tab In-Flight Fetches
 let currentTabFetchId = 0;
+let currentVersionFetchId = 0;
+let selectedVersion = 'v3';
 
 // Lightbox Module State
 let lightboxImages = [];
@@ -70,6 +73,14 @@ const tryFuzzyBtn = document.getElementById('try-fuzzy-btn');
 const fuzzyPickerState = document.getElementById('fuzzy-picker-state');
 const fuzzyPickerList = document.getElementById('fuzzy-picker-list');
 const primaryCard = document.getElementById('primary-card');
+const versionBtns = document.querySelectorAll('.version-switch-btn');
+const v3CardBody = document.getElementById('v3-card-body');
+const versionPanel = document.getElementById('version-panel');
+const versionPanelHeading = document.getElementById('version-panel-heading');
+const versionLoading = document.getElementById('version-loading');
+const versionMessage = document.getElementById('version-message');
+const versionViewer = document.getElementById('version-viewer');
+const versionRetryBtn = document.getElementById('version-retry-btn');
 
 // Card Elements (Mockup Visual Language + Interactive Hero Image + JSON Actions)
 const cardBrandAvatar = document.getElementById('card-brand-avatar');
@@ -273,6 +284,11 @@ function setupEventListeners() {
   refreshLookupBtn?.addEventListener('click', () => {
     if (currentSku) executeLookup(currentSku, 'exact', true);
   });
+
+  versionBtns.forEach(btn => {
+    btn.addEventListener('click', () => selectVersion(btn.dataset.version));
+  });
+  versionRetryBtn.addEventListener('click', () => selectVersion(selectedVersion));
 
   copyUpcBtn.addEventListener('click', async () => {
     const upcVal = cardUpc.textContent.trim();
@@ -766,6 +782,7 @@ function switchView(viewName) {
 
 // Execute Lookup Logic
 async function executeLookup(sku, matchingRule = 'exact', bypassCache = false) {
+  ++currentVersionFetchId;
   currentSku = sku;
   setSearchButtonLoading(true);
   showState('loading');
@@ -919,6 +936,59 @@ function renderFuzzyPicker(items, statusData) {
   });
 }
 
+async function selectVersion(version) {
+  const fetchId = ++currentVersionFetchId;
+  selectedVersion = version;
+  versionBtns.forEach(btn => btn.setAttribute('aria-pressed', String(btn.dataset.version === version)));
+  v3CardBody.classList.toggle('hidden', version !== 'v3');
+  versionPanel.classList.toggle('hidden', version === 'v3');
+  versionLoading.classList.add('hidden');
+  versionMessage.classList.add('hidden');
+  versionViewer.classList.add('hidden');
+  versionRetryBtn.classList.add('hidden');
+  versionMessage.textContent = '';
+  versionViewer.innerHTML = '';
+  if (version === 'v3') return;
+
+  const sku = activeProductData.sku;
+  versionPanelHeading.textContent = `API ${version} for SKU "${sku}"`;
+  versionLoading.classList.remove('hidden');
+  announceLiveRegion(`Loading API ${version} for SKU "${sku}".`);
+
+  let response;
+  try {
+    response = await chrome.runtime.sendMessage({ type: 'FETCH_VERSION_PRODUCT', sku, version });
+  } catch (err) {
+    response = { status: 500, message: err.message };
+  }
+  if (fetchId !== currentVersionFetchId || selectedVersion !== version || activeProductData?.sku !== sku) return;
+
+  versionLoading.classList.add('hidden');
+  const result = describeVersionResponse(version, sku, response);
+  if (result.kind === 'unauthorized') {
+    showState('unauthorized');
+    announceLiveRegion('Skulytics Bearer Token rejected (401 Unauthorized).');
+    return;
+  }
+  if (result.kind === 'record') {
+    versionViewer.innerHTML = formatJsonToHtml(result.record);
+    versionViewer.classList.remove('hidden');
+    if (result.recordCount > 1) {
+      versionMessage.textContent = `${result.recordCount} records returned; showing the first.`;
+      versionMessage.classList.remove('hidden');
+    }
+    announceLiveRegion(`API ${version} record loaded for SKU "${sku}".${result.recordCount > 1 ? ` ${result.recordCount} records returned; showing the first.` : ''}`);
+    return;
+  }
+
+  versionMessage.textContent = result.message;
+  versionMessage.classList.remove('hidden');
+  if (result.kind === 'rate-limited' || result.kind === 'error') {
+    versionRetryBtn.classList.remove('hidden');
+  }
+  announceLiveRegion(result.message);
+}
+
 function showState(stateName) {
   initialState.classList.add('hidden');
   loadingState.classList.add('hidden');
@@ -945,6 +1015,7 @@ function showState(stateName) {
 
 // RENDER PRIMARY CARD (WITH HERO IMAGE & COLORWAY INDEX PALETTE + FULL HOVER TOOLTIPS)
 function renderPrimaryCard(product, statusPayload) {
+  selectVersion('v3');
   // 1. Header Row: Brand Logo or Fallback Initial Circle + SKU Pill + Status Glow Pill
   // Never invent a brand when the API omits one - an unbranded record must read
   // as unknown, not as some other manufacturer's product.
